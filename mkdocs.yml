@@ -1,0 +1,10 @@
+site_name: photoshoot
+site_description: A pytest plugin for snapshot testing polars dataframes.
+site_author: Nelson Griffiths
+
+theme: readthedocs
+
+repo_url: https://github.com/ngriffiths13/photoshoot
+
+pages:
+  - Home: index.md
