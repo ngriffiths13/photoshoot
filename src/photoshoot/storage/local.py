@@ -31,9 +31,10 @@ class LocalPolarsStorage:
             file_name (str): The name of the file to write the data to.
 
         """
-        if not (self.directory).exists():
-            (self.directory).mkdir(parents=True)
-        data.write_parquet(self.directory / (file_name + self._FILE_EXTENSION))
+        file_path = self.directory / (file_name + self._FILE_EXTENSION)
+        if not file_path.parent.exists():
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+        data.write_parquet(file_path)
 
     def read(self, file_name: str) -> pl.DataFrame:
         """Read the data from a file.
