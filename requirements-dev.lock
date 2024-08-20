@@ -4,23 +4,100 @@
 # last locked with the following flags:
 #   pre: false
 #   features: []
-#   all-features: false
+#   all-features: true
 #   with-sources: false
 #   generate-hashes: false
 #   universal: false
 
 -e file:.
+aiohappyeyeballs==2.3.7
+    # via aiohttp
+aiohttp==3.10.4
+    # via gcsfs
+aiosignal==1.3.1
+    # via aiohttp
+attrs==24.2.0
+    # via aiohttp
+cachetools==5.5.0
+    # via google-auth
+certifi==2024.7.4
+    # via requests
+charset-normalizer==3.3.2
+    # via requests
 coverage==7.6.1
     # via pytest-cov
+decorator==5.1.1
+    # via gcsfs
+frozenlist==1.4.1
+    # via aiohttp
+    # via aiosignal
+fsspec==2024.6.1
+    # via gcsfs
+gcsfs==2024.6.1
+    # via photoshoot
+google-api-core==2.19.1
+    # via google-cloud-core
+    # via google-cloud-storage
+google-auth==2.33.0
+    # via gcsfs
+    # via google-api-core
+    # via google-auth-oauthlib
+    # via google-cloud-core
+    # via google-cloud-storage
+google-auth-oauthlib==1.2.1
+    # via gcsfs
+google-cloud-core==2.4.1
+    # via google-cloud-storage
+google-cloud-storage==2.18.2
+    # via gcsfs
+google-crc32c==1.5.0
+    # via google-cloud-storage
+    # via google-resumable-media
+google-resumable-media==2.7.2
+    # via google-cloud-storage
+googleapis-common-protos==1.63.2
+    # via google-api-core
+idna==3.7
+    # via requests
+    # via yarl
 iniconfig==2.0.0
     # via pytest
+multidict==6.0.5
+    # via aiohttp
+    # via yarl
+oauthlib==3.2.2
+    # via requests-oauthlib
 packaging==24.1
     # via pytest
 pluggy==1.5.0
     # via pytest
 polars==1.5.0
     # via photoshoot
+proto-plus==1.24.0
+    # via google-api-core
+protobuf==5.27.3
+    # via google-api-core
+    # via googleapis-common-protos
+    # via proto-plus
+pyasn1==0.6.0
+    # via pyasn1-modules
+    # via rsa
+pyasn1-modules==0.4.0
+    # via google-auth
 pytest==8.3.2
     # via photoshoot
     # via pytest-cov
 pytest-cov==5.0.0
+requests==2.32.3
+    # via gcsfs
+    # via google-api-core
+    # via google-cloud-storage
+    # via requests-oauthlib
+requests-oauthlib==2.0.0
+    # via google-auth-oauthlib
+rsa==4.9
+    # via google-auth
+urllib3==2.2.2
+    # via requests
+yarl==1.9.4
+    # via aiohttp
