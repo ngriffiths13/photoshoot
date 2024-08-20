@@ -65,6 +65,7 @@ class PhotoshootTest:
                 If true, tests automatically pass. Defaults to False.
 
         """
+        self.n_calls = 0
         self.update_snapshot = update_snapshot
         self.test_name = test_name
         self.storage = storage
@@ -88,7 +89,12 @@ class PhotoshootTest:
             SnapshotTestFailedError: Raised when the snapshot test fails.
 
         """
-        name = self.test_name if name is None else f"{self.test_name}/{name}"
+        self.n_calls += 1
+        name = (
+            f"{self.test_name}/df_{self.n_calls}"
+            if name is None
+            else f"{self.test_name}/{name}"
+        )
 
         # If we are updating the snapshot, write the file and return. Test should
         # always pass.

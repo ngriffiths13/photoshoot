@@ -16,6 +16,10 @@ def test__pl_local_snapshot_fixture__failed_snapshot(pytester):
             for child in d.iterdir():
                 if child.is_file():
                     child.unlink()
+                else:
+                    for grandchild in child.iterdir():
+                        grandchild.unlink()
+                    child.rmdir()
             d.rmdir()
 
         @pytest.fixture
@@ -60,6 +64,10 @@ def test__pl_local_snapshot_fixture__new_snapshot(pytester):
             for child in d.iterdir():
                 if child.is_file():
                     child.unlink()
+                else:
+                    for grandchild in child.iterdir():
+                        grandchild.unlink()
+                    child.rmdir()
             d.rmdir()
 
         @pytest.fixture
@@ -88,7 +96,7 @@ def test__pl_local_snapshot_fixture__new_snapshot(pytester):
 def test_gcs_path_ini_setting(pytester):
     pytester.makeini("""
         [pytest]
-        photoshoot-gcs-uri = gs://my-bucket/test-files
+        photoshoot-gcs-path = gs://my-bucket/test-files
     """)
 
     pytester.makepyfile("""
@@ -96,7 +104,7 @@ def test_gcs_path_ini_setting(pytester):
 
         @pytest.fixture
         def hello(request):
-            return request.config.getini('photoshoot-gcs-uri')
+            return request.config.getini('photoshoot-gcs-path')
 
         def test_hello_world(hello):
             assert hello == 'gs://my-bucket/test-files'

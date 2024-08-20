@@ -15,6 +15,10 @@ def temp_snapshot_dir(tmp_path) -> Path:
     for child in d.iterdir():
         if child.is_file():
             child.unlink()
+        else:
+            for grandchild in child.iterdir():
+                grandchild.unlink()
+            child.rmdir()
     d.rmdir()
 
 
