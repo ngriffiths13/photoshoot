@@ -19,9 +19,9 @@ def test__pl_local_snapshot_fixture__failed_snapshot(pytester):
             d.rmdir()
 
         @pytest.fixture
-        def snapshot(monkeypatch, temp_snapshot_dir, pl_local_snapshot):
-            pl_local_snapshot._DEFAULT_DIRECTORY = temp_snapshot_dir
-            return pl_local_snapshot
+        def snapshot(monkeypatch, temp_snapshot_dir, local_snapshot):
+            local_snapshot.storage.directory = temp_snapshot_dir
+            return local_snapshot
         """
     )
 
@@ -63,9 +63,9 @@ def test__pl_local_snapshot_fixture__new_snapshot(pytester):
             d.rmdir()
 
         @pytest.fixture
-        def snapshot(monkeypatch, temp_snapshot_dir, pl_local_snapshot):
-            pl_local_snapshot._DEFAULT_DIRECTORY = temp_snapshot_dir
-            return pl_local_snapshot
+        def snapshot(monkeypatch, temp_snapshot_dir, local_snapshot):
+            local_snapshot.storage.directory = temp_snapshot_dir
+            return local_snapshot
         """
     )
 
@@ -88,7 +88,7 @@ def test__pl_local_snapshot_fixture__new_snapshot(pytester):
 def test_gcs_path_ini_setting(pytester):
     pytester.makeini("""
         [pytest]
-        polars-snapshot-gcs-location = gs://my-bucket
+        photoshoot-gcs-uri = gs://my-bucket/test-files
     """)
 
     pytester.makepyfile("""
@@ -96,10 +96,10 @@ def test_gcs_path_ini_setting(pytester):
 
         @pytest.fixture
         def hello(request):
-            return request.config.getini('polars-snapshot-gcs-location')
+            return request.config.getini('photoshoot-gcs-uri')
 
         def test_hello_world(hello):
-            assert hello == 'gs://my-bucket'
+            assert hello == 'gs://my-bucket/test-files'
     """)
 
     result = pytester.runpytest("-v")

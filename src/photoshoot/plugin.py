@@ -1,6 +1,8 @@
 import pytest
 
-from photoshoot.core import PolarsLocalSnapshotTest
+from photoshoot.comp import PolarsPhotoshootCompare
+from photoshoot.core import PhotoshootTest
+from photoshoot.storage import GcsPolarsStorage, LocalPolarsStorage
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
@@ -14,11 +16,15 @@ def pytest_addoption(parser: pytest.Parser) -> None:
         help="Whether to take a new snapshot of a test. Defaults to False",
     )
 
-    parser.addini("polars-snapshot-gcs-location", type="string", help="GCS location")
+    parser.addini(
+        "photoshoot-gcs-path",
+        type="string",
+        help="GCS location to store snapshots. Should not start with 'gs://'",
+    )
 
 
 @pytest.fixture
-def pl_local_snapshot(request: pytest.FixtureRequest) -> PolarsLocalSnapshotTest:
+def local_snapshot(request: pytest.FixtureRequest) -> PhotoshootTest:
     """Fixture to create a PolarsLocalSnapshotTest instance.
 
     Args:
@@ -27,17 +33,36 @@ def pl_local_snapshot(request: pytest.FixtureRequest) -> PolarsLocalSnapshotTest
 
     Returns:
     -------
-        PolarsLocalSnapshotTest: PolarsLocalSnapshotTest instance
+        PhotoshootTest: PhotoshootTest instance
 
     """
     test_name = request.node.name
-    return PolarsLocalSnapshotTest(
+    return PhotoshootTest(
         test_name=test_name,
-        update_snapshot=request.config.option.new_snapshot,
+        storage=LocalPolarsStorage(),
+        compare=PolarsPhotoshootCompare(),
+        update_snapshot=request.config.getoption("new_snapshot"),
     )
 
 
-# @pytest.fixture
-# def pl_gcs_snapshot(request: pytest.FixtureRequest):
-#     gcs_uri = request.config.getini("polars-snapshot-gcs-location")
-#     validate_gcs_uri(gcs_uri)
+@pytest.fixture
+def gcs_snapshot(request: pytest.FixtureRequest) -> PhotoshootTest:
+    """Fixture to create a PolarsLocalSnapshotTest instance.
+
+    Args:
+    ----
+        request: pytest request object
+
+    Returns:
+    -------
+        PhotoshootTest: PhotoshootTest instance
+
+    """
+    test_name = request.node.name
+    gcs_path = request.config.getini("photoshoot-gcs-path")
+    return PhotoshootTest(
+        test_name=test_name,
+        storage=GcsPolarsStorage(gcs_path),
+        compare=PolarsPhotoshootCompare(),
+        update_snapshot=request.config.getoption("new_snapshot"),
+    )
